@@ -1,0 +1,47 @@
+DROP TABLE IF EXISTS members;
+CREATE TABLE members(name TEXT, name_full TEXT, password TEXT);
+INSERT INTO members(name, name_full, password) VALUES ('santtu','Santtu Salmiakki','asdgkjhaskdjgh');
+INSERT INTO members(name, name_full, password) VALUES ('lippa','Lippa Vika','dsfkjslkfgjsd');
+INSERT INTO members(name, name_full, password) VALUES ('baasi','Basse Bom','dsfkjslkfgjsd');
+INSERT INTO members(name, name_full, password) VALUES ('rumppi','Rane Rump','dsfkjslkfgjsd');
+INSERT INTO members(name, name_full, password) VALUES ('kilju','Kille Kulju','dsfkjslkfgjsd');
+
+DROP TABLE IF EXISTS bands;
+CREATE TABLE bands(name TEXT, name_full TEXT);
+INSERT INTO bands(name, name_full) VALUES ('KM','Kaikki mukaan');
+INSERT INTO bands(name, name_full) VALUES ('HP','Hevon Humppa');
+INSERT INTO bands(name, name_full) VALUES ('P3','Paskaa kolmannella');
+INSERT INTO bands(name, name_full) VALUES ('LoL','Lievästi on liukasta');
+
+DROP TABLE IF EXISTS band_members;
+CREATE TABLE band_members(band_name TEXT, member_name TEXT);
+INSERT INTO band_members(band_name, member_name) VALUES ('KM','santtu');
+INSERT INTO band_members(band_name, member_name) VALUES ('KM','lippa');
+INSERT INTO band_members(band_name, member_name) VALUES ('KM','baasi');
+INSERT INTO band_members(band_name, member_name) VALUES ('KM','rumppi');
+INSERT INTO band_members(band_name, member_name) VALUES ('KM','kilju');
+
+INSERT INTO band_members(band_name, member_name) VALUES ('HP','santtu');
+INSERT INTO band_members(band_name, member_name) VALUES ('HP','lippa');
+INSERT INTO band_members(band_name, member_name) VALUES ('HP','baasi');
+
+INSERT INTO band_members(band_name, member_name) VALUES ('P3','baasi');
+INSERT INTO band_members(band_name, member_name) VALUES ('P3','rumppi');
+INSERT INTO band_members(band_name, member_name) VALUES ('P3','kilju');
+
+INSERT INTO band_members(band_name, member_name) VALUES ('LoL','lippa');
+INSERT INTO band_members(band_name, member_name) VALUES ('LoL','rumppi');
+
+
+DROP TABLE IF EXISTS nogo_dates;
+CREATE TABLE nogo_dates(date DATE, member_name TEXT);
+INSERT INTO nogo_dates(date, member_NAME) VALUES ('2022-06-11', 'lippa');
+INSERT INTO nogo_dates(date, member_NAME) VALUES ('2022-05-12', 'rumppi');
+INSERT INTO nogo_dates(date, member_NAME) VALUES ('2022-02-20', 'santtu');
+INSERT INTO nogo_dates(date, member_NAME) VALUES ('2022-05-12', 'baasi');
+INSERT INTO nogo_dates(date, member_NAME) VALUES ('2022-04-01', 'kilju');
+INSERT INTO nogo_dates(date, member_NAME) VALUES ('2022-05-14', 'rumppi');
+
+.dump
+
+
