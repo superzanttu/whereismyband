@@ -147,6 +147,18 @@ def list_nogodates():
     html+="</table>"
     return html
 
+
+def grouper_it(n, iterable):
+    it = iter(iterable)
+    while True:
+        chunk_it = itertools.islice(it, n)
+        try:
+            first_el = next(chunk_it)
+        except StopIteration:
+            return
+        yield itertools.chain((first_el,), chunk_it)
+
+
 def show_nogo_calendar():
     #cal=calendar.LocaleHTMLCalendar(firstweekday=0,locale="fi_FI.UTF-8")
 
@@ -159,10 +171,15 @@ def show_nogo_calendar():
 
     month_names=["Tammikuu","Helmikuu","Maaliskuu","Huhtikuu","Toukokuu","Kesäkuu","Heinäkuu","Elokuu","Syyskuu","Lokakuu","Marraskuu","Joulukuu"]
     day_name=["Maanantai","Tiistai","Keskiviikko","Torstai","Perjantai","Lauantai","Sunnuntai"]
+
     for year in range (2022,2024):
         html+="<h1>%s<h1>" % (year)
+        
         for month in range (1,13):
+            first_day_of_month, days_in_month = calendar.monthrange(year,month)
             html+="<h2>%s (%s/%s)</h2>" % (month_names[month-1],month,year)
-            #for i in cal.monthdatescalendar(year, month):
-            #html+="<p>%s</p>" % (i)
+      
+
+
+            html+="<p>%s %s</p>" % (first_day_of_month, days_in_month)
     return html
