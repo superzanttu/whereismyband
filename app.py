@@ -147,10 +147,6 @@ def list_nogodates():
     html+="</table>"
     return html
 
-
-
-
-
 def show_nogo_calendar():
     #cal=calendar.LocaleHTMLCalendar(firstweekday=0,locale="fi_FI.UTF-8")
 
