@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS members;
 CREATE TABLE members(name TEXT, name_full TEXT, password TEXT, enabled BOOLEAN);
 INSERT INTO members(name, name_full, password, enabled) VALUES ('santtu','Santtu Salmiakki','asdgkjhaskdjgh', TRUE);
-INSERT INTO members(name, name_full, password, enabled) VALUES ('lippa','Lippa Vika','dsfkjslkfgjsd', TRUE);
+INSERT INTO members(name, name_full, password, enabled) VALUES ('lipa','Lippa Vika','dsfkjslkfgjsd', TRUE);
 INSERT INTO members(name, name_full, password, enabled) VALUES ('baasi','Basse Bom','dsfkjslkfgjsd', TRUE);
 INSERT INTO members(name, name_full, password, enabled) VALUES ('rumppi','Rane Rump','dsfkjslkfgjsd', TRUE);
 INSERT INTO members(name, name_full, password, enabled) VALUES ('kilju','Kille Kulju','dsfkjslkfgjsd', TRUE);
