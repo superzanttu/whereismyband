@@ -35,7 +35,7 @@ INSERT INTO band_members(band_name, member_name) VALUES ('LoL','rumppi');
 
 DROP TABLE IF EXISTS nogo_dates;
 CREATE TABLE nogo_dates(date DATE, member_name TEXT);
-INSERT INTO nogo_dates(date, member_NAME) VALUES ('2022-06-11', 'lippa');
+INSERT INTO nogo_dates(date, member_NAME) VALUES ('2022-06-11', 'lipa');
 INSERT INTO nogo_dates(date, member_NAME) VALUES ('2022-05-12', 'rumppi');
 INSERT INTO nogo_dates(date, member_NAME) VALUES ('2022-02-20', 'santtu');
 INSERT INTO nogo_dates(date, member_NAME) VALUES ('2022-05-12', 'baasi');

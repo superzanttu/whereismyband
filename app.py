@@ -2,19 +2,29 @@
 from flask import Flask
 from flask import request
 from flask import session
-from flask import abort, redirect, url_for
+from flask import abort, redirect, url_for, flash
+
+# Flask-login
+import flask_login
+from flask_login import LoginManager
 
 # Database
 import sqlite3
 from flask import g
 DATABASE = "./database/wimb.db"
 
-# Calendar
+# Calendar related libraries
 import calendar
+import datetime
+
 
 app = Flask(__name__)
+login_manager = LoginManager()
+login_manager.init_app(app)
+
 
 app.secret_key = b'paskpaskpok'
+
 
 # Useb by every URL function to to print out HTML code
 # Used as simple and stypupid HTML template
@@ -28,18 +38,10 @@ def get_development_html_menu():
     html="<div>"
     html+="<strong>Development menu</strong>: "
     
-    devurls=[["login","Login"],["logout","Logout"],["nogo_calendar","Näytä EiKäy-kalenteri"], ["bands","Näytä bändit"], ["members","Näytä käyttäjät"],["bandmembers","Näytä bändien jäsenet"],["nogo_dates","Näytä kaikki EiKäy-päivät"],["add_nogo","Lisää EiKäy-päivä"]]
+    devurls=[["login","Login"],["logout","Logout"],["register","Rekisteröidy"],["show_nogo_calendar","Näytä EiKäy-kalenteri"], ["all_bands","Näytä bändit"], ["all_members","Näytä käyttäjät"],["all_bandmembers","Näytä bändien jäsenet"],["all_nogo_dates","Näytä kaikki EiKäy-päivät"],["add_nogo_date","Lisää EiKäy-päivä"]]
 
     for du in devurls:
         html+='<a href="/%s">[%s]</a> ' % (du[0], du[1])
-
-    #html+='<a href="/login">Login</a> '
-    #html+='<a href="/logout">Logout</a> '
-    #html+='<a href="/nogo_calendar">NoGo Calendar</a> '
-    #html+='<a href="/bands">Bands</a> '
-    #html+='<a href="/members">Members</a> '
-    #html+='<a href="/bandmembers">Band Members</a> '
-    #html+='<a href="/nogo_dates">NoGo Dates</a> '
     
     html+="</div>"
     if 'username' in session:
@@ -80,49 +82,49 @@ def write_db(query, args=(), one=False):
     return 
 
 @app.route("/")
-def index():
+def url_index():
     html='<p>Terve, apina!</p>'
 
     return show_page(html)
 
-@app.get('/login')
-def login_get():
-    return show_page(show_the_login_form())
+#@app.get('/login')
+#def url_login_get():
+#    return show_page(show_the_login_form())
 
-@app.post('/login')
-def login_post():
+@app.route('/login', methods=['GET', 'POST'])
+def url_login():
     return do_the_login()
 
 @app.route("/logout")
-def logout():
+def url_logout():
     return do_the_logout()
 
-@app.route("/bands")
-def bands():
+@app.route("/all_bands")
+def url_all_bands():
     return show_page(list_bands())
 
-@app.route("/members")
-def members():
+@app.route("/all_members")
+def url_all_members():
     return show_page(list_members())
 
-@app.route("/bandmembers")
-def bandmembers():
+@app.route("/all_bandmembers")
+def url_bandmembers():
     return show_page(list_bandmembers())
 
-@app.route("/nogo_calendar")
-def nogo_calendar():
+@app.route("/show_nogo_calendar")
+def url_show_nogo_calendar():
     return show_page(show_nogo_calendar())
 
-@app.route("/nogo_dates")
-def nogodates():
+@app.route("/all_nogo_dates")
+def url_all_nogo_dates():
     return show_page(list_nogodates())
 
-@app.get('/add_nogo')
-def add_nogo_get():
+@app.get('/add_nogo_date')
+def url_add_nogo_get():
     return show_page(show_the_nogo_form())
 
-@app.post('/add_nogo')
-def add_nogo_post():
+@app.post('/add_nogo_date')
+def url_add_nogo_post():
     return show_page(add_nogo_date())
 
 def show_the_login_form():
@@ -139,22 +141,55 @@ def show_the_login_form():
     html+='</form>'
     return html
 
+
+
+def get_weeknumber(year,month,day):
+
+    #weeknumber=datetime.date(year, month, day).strftime("%W")
+    isoyear,isoweek,isoday=datetime.date(year, month, day).isocalendar()
+
+    return isoweek
+
 def do_the_login():
     
+    if request.method == 'POST':
+        sql='SELECT * FROM members WHERE name="%s"' % (request.form['uname'])
+        userdata = query_db_one(sql)
+
+        if userdata != None:
+            if request.form['uname'] == userdata['name']: # FIXME salasanan tarkistus puuttuu
+                session['username'] = request.form['uname']
+                return redirect(url_for('url_index'))
+            return "<p>Ei käy sittenkään</p>"
+        else:
+            return "<p>Käyttäjää ei löydy</p>"
+    else:
+        return show_the_login_form()
+   
+
+    flash('Logged in successfully.')
+
+    return redirect(url_for('url_index'))
+
+    return flask.render_template('login.html', form=form)
+    
+
+
+
     sql='SELECT * FROM members WHERE name="%s"' % (request.form['uname'])
     userdata = query_db_one(sql)
 
     if userdata != None:
         if request.form['uname'] == userdata['name']: # FIXME salasanan tarkistus puuttuu
             session['username'] = request.form['uname']
-            return redirect(url_for('index'))
+            return redirect(url_for('url_index'))
         return "<p>Ei käy sittenkään</p>"
     else:
         return "<p>Käyttäjää ei löydy</p>"
 
 def do_the_logout():
     session.pop('username', None)
-    return redirect(url_for('index'))
+    return redirect(url_for('url_index'))
 
 def list_bands():
     html="<h1>Bändit</h1>"
@@ -187,7 +222,7 @@ def list_bandmembers():
 def list_nogodates():
     html="<h1>Ei käy-päivät</h1>"
     html+="<table><tr><th>Päivä</th><th>Jäsen</th></tr>"
-    for ngd in query_db_all('select * from nogo_dates'):
+    for ngd in query_db_all('SELECT * FROM nogo_dates ORDER BY date, member_name'):
         html += "<tr><td>%s</td><td>%s</td></tr>" % (ngd['date'], ngd['member_name'])
     html+="</table>"
     return html
@@ -221,11 +256,15 @@ def show_nogo_calendar():
             html+='<tr>'
             for d in day_names:
                 html+='<th style="border: 1px solid black;border-collapse: collapse;">%s</th>' % d
+            html+='<th>Viikko</th>'
             html+="</tr>"
+            
+
 
             html+="<tr>"
 
-            # Täytetään alku
+         
+            # Täytetään vajaa viikko
             weekday_counter=0
             if first_day_of_month != 0: # Jos kuukausi ei ala maanataina
                 for i in range(0,first_day_of_month):
@@ -246,15 +285,33 @@ def show_nogo_calendar():
             
                 weekday_counter+=1
                 if weekday_counter>=7:
-                    html+="</tr><tr>"
+                    
+                    # Lisätään viikko jokaisen rivin alkuun
+                    weeknumber=get_weeknumber(year, month, day)
+                    html+='<td style="border: 1px solid black;border-collapse: collapse;">%s</td>' % (weeknumber)
                     weekday_counter=0
 
+                    html+="</tr><tr>"
+            
+
+            # Täytetään kuukauden viimeinen viikko
+            if weekday_counter > 0:
+                for i in range(weekday_counter,7):
+                    html+='<td style="border: 1px solid black;border-collapse: collapse;"></td>'
+
+                # Lisätään viikko kuukauden viimeiselle riville
+                weeknumber=get_weeknumber(year, month, day)
+                html+='<td style="border: 1px solid black;border-collapse: collapse;">%s</td>'% (weeknumber)
+            
+
             html+="</tr>"
+
             html+="</table>"
+    return html
 
 def show_the_nogo_form():
     html='<form method="post">'
-    html+='<input type="date" name="nogo_date" required>'
+    html+='<input type="date" name="nogo_date" required />'
     html+='<button type="submit">Lisää EiKäy-päivä</button>'
     html+='<button type="button" class="cancelbtn">Ei sittenkään</button>'
     html+='</form>'
@@ -266,3 +323,12 @@ def add_nogo_date():
     userdata = write_db(sql)
 
     return "<p>Käyttäjälle %s lisätty EiKäy-päivä %s</p>" % (session['username'], request.form['nogo_date'])
+
+class User(flask_login.UserMixin):
+    pass
+    
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
+
