@@ -318,9 +318,14 @@ def show_the_nogo_form():
     return html
 
 def add_nogo_date():
+
+    # Tarkistetaan ettei samaa päivää lisätä uudelleen
+    sql='SELECT * FROM nogo_dates WHERE date="%s" AND member_name="%s"  
+
     sql='INSERT INTO nogo_dates (date, member_name) VALUES ("%s","%s");' % (request.form['nogo_date'], session['username'])
     app.logger.debug (sql)
     userdata = write_db(sql)
+
 
     return "<p>Käyttäjälle %s lisätty EiKäy-päivä %s</p>" % (session['username'], request.form['nogo_date'])
 
