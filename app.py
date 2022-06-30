@@ -38,7 +38,7 @@ def get_development_html_menu():
     html="<div>"
     html+="<strong>Development menu</strong>: "
     
-    devurls=[["login","Login"],["logout","Logout"],["register","Rekisteröidy"],["show_nogo_calendar","Näytä EiKäy-kalenteri"], ["all_bands","Näytä bändit"], ["all_members","Näytä käyttäjät"],["all_bandmembers","Näytä bändien jäsenet"],["all_nogo_dates","Näytä kaikki EiKäy-päivät"],["add_nogo_date","Lisää EiKäy-päivä"]]
+    devurls=[["login","Login"],["logout","Logout"],["register","Rekisteröidy"],["show_nogo_calendar","Näytä NoGo-kalenteri"], ["all_bands","Näytä bändit"], ["all_members","Näytä käyttäjät"],["all_bandmembers","Näytä bändien jäsenet"],["all_nogo_dates","Näytä kaikki NoGo-päivät listana"],["add_nogo_date","Lisää NoGo-päivä"]]
 
     for du in devurls:
         html+='<a href="/%s">[%s]</a> ' % (du[0], du[1])
@@ -220,7 +220,7 @@ def list_bandmembers():
     return html
 
 def list_nogodates():
-    html="<h1>Ei käy-päivät</h1>"
+    html="<h1>NoGo-päivät</h1>"
     html+="<table><tr><th>Päivä</th><th>Jäsen</th></tr>"
     for ngd in query_db_all('SELECT * FROM nogo_dates ORDER BY date, member_name'):
         html += "<tr><td>%s</td><td>%s</td></tr>" % (ngd['date'], ngd['member_name'])
@@ -312,7 +312,7 @@ def show_nogo_calendar():
 def show_the_nogo_form():
     html='<form method="post">'
     html+='<input type="date" name="nogo_date" required />'
-    html+='<button type="submit">Lisää EiKäy-päivä</button>'
+    html+='<button type="submit">Lisää NoGo-päivä</button>'
     html+='<button type="button" class="cancelbtn">Ei sittenkään</button>'
     html+='</form>'
     return html
@@ -320,14 +320,20 @@ def show_the_nogo_form():
 def add_nogo_date():
 
     # Tarkistetaan ettei samaa päivää lisätä uudelleen
-    sql='SELECT * FROM nogo_dates WHERE date="%s" AND member_name="%s"  
+    sql='SELECT * FROM nogo_dates WHERE date="%s" AND member_name="%s"' % (request.form['nogo_date'], session['username'])
+    dup=query_db_one(sql)
 
-    sql='INSERT INTO nogo_dates (date, member_name) VALUES ("%s","%s");' % (request.form['nogo_date'], session['username'])
-    app.logger.debug (sql)
-    userdata = write_db(sql)
+    if dup == None:
+        sql='INSERT INTO nogo_dates (date, member_name) VALUES ("%s","%s");' % (request.form['nogo_date'], session['username'])
+        app.logger.debug (sql)
+        userdata = write_db(sql)
+        return "<p>Käyttäjälle %s lisätty NoGo-päivä %s</p>" % (session['username'], request.form['nogo_date'])
+    else:
+        return "<p>Päivälle %s on jo merkintä</p>" % (request.form['nogo_date'])
 
 
-    return "<p>Käyttäjälle %s lisätty EiKäy-päivä %s</p>" % (session['username'], request.form['nogo_date'])
+
+    
 
 class User(flask_login.UserMixin):
     pass
