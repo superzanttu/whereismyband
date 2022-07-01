@@ -1,3 +1,9 @@
+# List of tables
+# members - list of all users and band members
+# bands - list of all bands using this appliation
+# band_members - defines who is member of which band
+# nogo_dates - nogo-dates of members
+
 DROP TABLE IF EXISTS members;
 CREATE TABLE members(name TEXT, name_full TEXT, password TEXT, enabled BOOLEAN);
 INSERT INTO members(name, name_full, password, enabled) VALUES ('santtu','Santtu Salmiakki','asdgkjhaskdjgh', TRUE);
