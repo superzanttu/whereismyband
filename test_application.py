@@ -18,12 +18,12 @@ import calendar
 import datetime
 
 
-app = Flask(__name__)
-login_manager = LoginManager()
-login_manager.init_app(app)
+#app = Flask(__name__)
+#login_manager = LoginManager()
+#login_manager.init_app(app)
 
 
-app.secret_key = b'paskpaskpok'
+#app.secret_key = b'paskpaskpok'
 
 
 # Useb by every URL function to to print out HTML code

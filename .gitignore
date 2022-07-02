@@ -166,3 +166,4 @@ cython_debug/
 
 # WIMB database
 database/wimb.db
+database/wimb.sqlite
