@@ -1,1 +1,1 @@
-sqlite3 ./database/wimb.db < database_setup.sql
+# sqlite3 ./database/wimb.db < database_setup.sql

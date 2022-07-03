@@ -32,4 +32,9 @@ def create_app():
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
+     # blueprint for auth init routes in our app
+    from .init import init as init_blueprint
+    app.register_blueprint(init_blueprint)
+
+
     return app
