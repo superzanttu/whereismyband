@@ -1,42 +1,20 @@
 from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 from . import alchemy_db
+from dev import get_developer_menu
 
 main = Blueprint('main', __name__)
 
 
-# Generates simple menu for develeopers
-def get_developer_menu():
-
-    html="<div>"
-    html+="<strong>Development menu</strong>: "
-    
-    devurls=[["show_nogo_calendar","Näytä NoGo-kalenteri"], 
-            ["all_bands","Näytä bändit"],
-            ["all_members","Näytä käyttäjät"],
-            ["all_bandmembers","Näytä bändien jäsenet"],
-            ["all_nogo_dates","Näytä kaikki NoGo-päivät listana"],
-            ["add_nogo_date","Lisää NoGo-päivä"]]
-
-    for du in devurls:
-        html+='<a href="/%s">[%s]</a> ' % (du[0], du[1])
-    
-    html+="</div>"
-    if 'username' in session:
-        html+=f'<p>Logged in as {session["username"]}</p>'
-    else:
-        html+='Et ole kirjautuneena'
-    return html
-
 
 @main.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', devmenu=get_developer_menu() )
 
 @main.route('/profile')
 @login_required
 def profile():
-    return render_template('profile.html', name=current_user.name)
+    return render_template('profile.html', name=current_user.name, devmenu=get_developer_menu())
 
 
 # URLs for application functions

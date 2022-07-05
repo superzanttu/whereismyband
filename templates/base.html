@@ -33,13 +33,19 @@
                                 Liity
                             </a>
                             {% endif %}
+
                             {% if current_user.is_authenticated %}
                             <a href="{{ url_for('auth.logout') }}" class="navbar-item">
                                 Ulos
+                            </a>
                             {% endif %}
 
                             {% if current_user.is_developer %}
-                                {{ get_developer_menu() }}
+                                {% for dm in devmenu %}
+                                    <a href="{{ dm[0] }}" class="navbar-item">
+                                        {{ dm[1] }}
+                                    </a>
+                                {% endfor %}
                             {% endif %}
 
                             </a>
