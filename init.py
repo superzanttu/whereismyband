@@ -7,6 +7,8 @@
 #from sqlalchemy.orm import relationship
 #from sqlalchemy import create_engine
 
+from flask_login import login_required
+
 from ast import excepthandler
 from .models import User, NoGoCalendar, Bands, BandMembers
 
@@ -19,6 +21,7 @@ from . import alchemy_db, create_app, models;
 init = Blueprint('init', __name__)
 
 @init.route('/init')
+@login_required
 def init_all():
 
     try:
@@ -50,7 +53,7 @@ def init_all():
 
 
     # Add test users
-    new_user = User(email="santtu@band.com", name="Santtu Salmiakki", password=generate_password_hash("santtu", method='sha256'))
+    new_user = User(email="santtu@band.com", name="Santtu Salmiakki", password=generate_password_hash("santtu", method='sha256'), developer=True)
     alchemy_db.session.add(new_user)
     new_user = User(email="lipa@band.com", name="Lippa Vika", password=generate_password_hash("lipa", method='sha256'))
     alchemy_db.session.add(new_user)

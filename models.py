@@ -8,6 +8,11 @@ class User(UserMixin, alchemy_db.Model):
     password = alchemy_db.Column(alchemy_db.String(100))
     name = alchemy_db.Column(alchemy_db.String(1000))
     enabled = alchemy_db.Column(alchemy_db.Boolean())
+    developer = alchemy_db.Column(alchemy_db.Boolean())
+    
+    @property
+    def is_developer(self):
+        return True #FIXME
 
 class NoGoCalendar(alchemy_db.Model):
     __tablename__ = 'nogo_dates'

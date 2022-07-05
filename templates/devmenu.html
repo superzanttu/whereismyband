@@ -38,8 +38,9 @@
                                 Ulos
                             {% endif %}
 
-                            {% if current_user.is_developer %}
-                                {{ get_developer_menu() }}
+                            {% if not current_user.is_authenticated %}
+                            <a href="{{ url_for('init.init_all') }}" class="navbar-item">
+                                Init (DANGEROUS!)
                             {% endif %}
 
                             </a>
