@@ -35,36 +35,36 @@
 
 
 
-def MIGRATE_THIS_get_db():
-    db = getattr(g, '_database', None)
-    if db is None:
-        db = g._database = sqlite3.connect(DATABASE)
-    db.row_factory = sqlite3.Row
-    return db
+# def MIGRATE_THIS_get_db():
+#     db = getattr(g, '_database', None)
+#     if db is None:
+#         db = g._database = sqlite3.connect(DATABASE)
+#     db.row_factory = sqlite3.Row
+#     return db
 
-@app.teardown_appcontext
-def MIGRATE_THIS_close_connection(exception):
-    db = getattr(g, '_database', None)
-    if db is not None:
-        db.close()
+# @app.teardown_appcontext
+# def MIGRATE_THIS_close_connection(exception):
+#     db = getattr(g, '_database', None)
+#     if db is not None:
+#         db.close()
 
-def MIGRATE_THIS_query_db_all(query, args=(), one=False):
-    cur = get_db().execute(query, args)
-    rv = cur.fetc   hall()
-    cur.close()
-    return (rv[0] if rv else None) if one else rv
+# def MIGRATE_THIS_query_db_all(query, args=(), one=False):
+#     cur = get_db().execute(query, args)
+#     rv = cur.fetc   hall()
+#     cur.close()
+#     return (rv[0] if rv else None) if one else rv
 
-def MIGRATE_THIS_query_db_one(query, args=(), one=False): # FIXME one=False onkin tarjolla!
-    cur = get_db().execute(query, args)
-    rv = cur.fetchone()
-    cur.close()
-    return (rv[0] if rv else None) if one else rv
+# def MIGRATE_THIS_query_db_one(query, args=(), one=False): # FIXME one=False onkin tarjolla!
+#     cur = get_db().execute(query, args)
+#     rv = cur.fetchone()
+#     cur.close()
+#     return (rv[0] if rv else None) if one else rv
 
-def MIGRATE_THIS_write_db(query, args=(), one=False):
-    cur = get_db().execute(query, args)
-    rv = get_db().commit()
-    cur.close()
-    return 
+# def MIGRATE_THIS_write_db(query, args=(), one=False):
+#     cur = get_db().execute(query, args)
+#     rv = get_db().commit()
+#     cur.close()
+#     return 
 
 # @app.route("/")
 # def DONT_USE_url_index():

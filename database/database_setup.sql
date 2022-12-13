@@ -6,11 +6,11 @@
 
 DROP TABLE IF EXISTS members;
 CREATE TABLE members(name TEXT, name_full TEXT, password TEXT, enabled BOOLEAN);
-INSERT INTO members(name, name_full, password, enabled) VALUES ('santtu','Santtu Salmiakki','asdgkjhaskdjgh', TRUE);
-INSERT INTO members(name, name_full, password, enabled) VALUES ('lipa','Lippa Vika','dsfkjslkfgjsd', TRUE);
-INSERT INTO members(name, name_full, password, enabled) VALUES ('baasi','Basse Bom','dsfkjslkfgjsd', TRUE);
-INSERT INTO members(name, name_full, password, enabled) VALUES ('rumppi','Rane Rump','dsfkjslkfgjsd', TRUE);
-INSERT INTO members(name, name_full, password, enabled) VALUES ('kilju','Kille Kulju','dsfkjslkfgjsd', TRUE);
+INSERT INTO members(name, name_full, password, enabled) VALUES ('santtu','Santtu Salmiakki','sala', TRUE);
+INSERT INTO members(name, name_full, password, enabled) VALUES ('lipa','Lippa Vika','sala', TRUE);
+INSERT INTO members(name, name_full, password, enabled) VALUES ('baasi','Basse Bom','sala', TRUE);
+INSERT INTO members(name, name_full, password, enabled) VALUES ('rumppi','Rane Rump','sala', TRUE);
+INSERT INTO members(name, name_full, password, enabled) VALUES ('kilju','Kille Kulju','sala', TRUE);
 
 DROP TABLE IF EXISTS bands;
 CREATE TABLE bands(name TEXT, name_full TEXT);
