@@ -58,6 +58,8 @@ def url_add_nogo_get():
 def url_add_nogo_post():
     return "ADD NOGO DATE"
 
+
+
 def list_all_bands():
     stmt = list(alchemy_db.session.execute(alchemy_db.select(Bands)).scalars())
     return render_template('all_bands.html', table_data=stmt, devmenu=get_developer_menu())
@@ -79,10 +81,10 @@ def nogo_calendar():
     stmt = list(alchemy_db.session.execute(alchemy_db.select(NoGoDates).order_by(NoGoDates.date)).scalars())
     cal={}
     for dd in stmt:
-        print("dd:", dd, "dd.date:", dd.date, "type(dd.date):", type(dd.date))
+        #print("dd:", dd, "dd.date:", dd.date, "type(dd.date):", type(dd.date))
         #ngd = pendulum.from_format(str(dd.date), 'YYYY-MM-DD')
         ngd = pendulum.instance(datetime.datetime.fromordinal(dd.date.toordinal()), tz="Europe/Helsinki")
-        print(ngd, type(ngd))
+        #print(ngd, type(ngd))
         ngd_year = ngd.year
         ngd_month = ngd.month
         ngd_day = ngd.day
@@ -90,18 +92,22 @@ def nogo_calendar():
         # print ("Y:",y,"D:",d,"M:",m)
         if ngd_year not in cal.keys():
             cal[ngd_year]={}
-            for m in range(1, 12):
+            for m in range(1, 13):
                 cal[ngd_year][m] = {}
                 start_of_month = pendulum.local(ngd_year, m, 1)
-                end_of_month = start_of_month.end_of('month')
+                end_of_month = start_of_month.end_of('month') 
                 cal[ngd_year][m]['first_day'] = start_of_month.day
                 cal[ngd_year][m]['first_weekday'] = start_of_month.day_of_week
                 cal[ngd_year][m]['last_day'] = end_of_month.day
-                for d in range(start_of_month.day, end_of_month.day):
+                for d in range(start_of_month.day, end_of_month.day + 1):
                     cal[ngd_year][m][d]={}
                     cal[ngd_year][m][d]['nogo'] = False
                     cal[ngd_year][m][d]['day'] = d
-                    
+                    cal[ngd_year][m][d]['weekday'] = pendulum.local(ngd_year, m, d).day_of_week
+                    cal[ngd_year][m][d]['button_id'] = pendulum.local(ngd_year, m, d).to_date_string()
+                    #print(pendulum.local(ngd_year, m, d).day_of_week)
+        #pprint(cal)
+        cal[ngd_year][ngd_month][ngd_day]['nogo'] = True            
 
 
         #pprint(cal)
