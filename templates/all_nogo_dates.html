@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="title">NoGo-dates</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Jäsenen ID</th>
+      <th>NoGo-päivämäärä</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for d in table_data %}
+    <tr>
+      <td>{{ d.id }}</td>
+      <td>{{ d.member_id }}</td>
+      <td>{{ d.date }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
+

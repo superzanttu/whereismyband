@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="title">Jäsenet</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nimi</th>
+      <th>Sähköposti</th>
+      <th>Salasana</th>
+      <th>Aktiivinen</th>
+      <th>Kehittäjä</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for d in table_data %}
+    <tr>
+      <td>{{ d.id }}</td>
+      <td>{{ d.name }}</td>
+      <td>{{ d.email }}</td>
+      <td>{{ d.password }}</td>
+      <td>{{ d.enabled }}</td>
+      <td>{{ d.developer }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
+

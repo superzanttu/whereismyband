@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="title">NoGo-kalenteri</h1>
+
+
+
+<table class="table">
+  {% for y in calendar  %}
+    {% for m in calendar[y] %}
+  <thead>
+    <tr>
+      <th>Vuosi</th>
+      <th>Kuukausi</th>
+      <th>Maanantai</th>
+      <th>Tiistai</th>
+      <th>Keskiviikko</th>
+      <th>Torstai</th>
+      <th>Perjantai</th>
+      <th>Lauantai</th>
+      <th>Sunnuntai</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr>
+      <td>{{ y }}</td>
+      <td>{{ w }}</td>
+      {% for d in calendar[y][w] %}
+        <td><div class="button is-danger is-size-4">{{ calendar[y][w][d]['day'] }}</div><div class="is-size-7">{{ calendar[y][w][d]['text'] }}</div></td>
+      {% endfor %}  
+    </tr>
+  </tbody>
+    {% endfor %}  
+  {% endfor %}
+</table>
+
+
+{% endblock %}
+

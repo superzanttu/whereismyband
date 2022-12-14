@@ -7,61 +7,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Where Is My Band</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+    {# <link rel="stylesheet" href="../css/bulma.css">  #}
 </head>
 
 <body>
-    <section class="hero is-primary is-fullheight">
-
-        <div class="hero-head">
-            <nav class="navbar">
-                <div class="container">
-                    <div id="navbarMenuHeroA" class="navbar-menu">
-                        <div class="navbar-end">
-                            <a href="{{ url_for('main.index') }}" class="navbar-item">
-                                Alku
-                            </a>
-                            {% if current_user.is_authenticated %}
-                            <a href="{{ url_for('main.profile') }}" class="navbar-item">
-                                Oma tiedot
-                            </a>
-                            {% endif %}
-                            {% if not current_user.is_authenticated %}
-                            <a href="{{ url_for('auth.login') }}" class="navbar-item">
-                                Sisään
-                            </a>
-                            <a href="{{ url_for('auth.signup') }}" class="navbar-item">
-                                Liity
-                            </a>
-                            {% endif %}
-
-                            {% if current_user.is_authenticated %}
-                            <a href="{{ url_for('auth.logout') }}" class="navbar-item">
-                                Ulos
-                            </a>
-                            {% endif %}
-
-                            {% if current_user.is_developer %}
-                                {% for dm in devmenu %}
-                                    <a href="{{ dm[0] }}" class="navbar-item">
-                                        {{ dm[1] }}
-                                    </a>
-                                {% endfor %}
-                            {% endif %}
-
-                            </a>
+    <nav class="navbar is-transparent is-primary" role="navigation" aria-label="main navigation">
+        <nav class="navbar-menu">
+            <div class="navbar-start">
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('main.index') }}" class="navbar-item">Alku</a>
+                    <a href="{{ url_for('main.profile') }}" class="navbar-item">Oma tiedot</a>
+                {% endif %}
+            </div>
+            <div class="navbar-end">
+                {% if not current_user.is_authenticated %}
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a href="{{ url_for('auth.login') }}" class="button"><strong>Sisään</strong></a>
+                            <a href="{{ url_for('auth.signup') }}" class="button">Liity</a>
                         </div>
                     </div>
+                {% endif %}
+                {% if current_user.is_developer %}
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">Dev</a>
+                        <div class="navbar-dropdown is-boxed">
+                            {% for dm in devmenu %}
+                                <a href="{{ dm[0] }}" class="navbar-item">{{ dm[1] }}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}                
+                {% if current_user.is_authenticated %}
+                    <div class="navbar-item">
+                        <a href="{{ url_for('auth.logout') }}" class="button is-danger">Ulos</a>
+                    </div>
+                {% endif %}
                 </div>
-            </nav>
-        </div>
-
-        <div class="hero-body">
-            <div class="container has-text-centered">
-               {% block content %}
-               {% endblock %}
             </div>
-        </div>
-    </section>
+        </nav>
+    </nav>
+            
+    <div class="block">
+        {% block content %}
+        {% endblock %}
+     </div>
+                
+
+            
 </body>
 
 </html>
